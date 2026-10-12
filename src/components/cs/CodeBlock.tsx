@@ -132,7 +132,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
       <div style={{ flex: 1, overflow: "hidden", position: "relative", padding: "16px 0" }}>
         <Highlight code={text} language={language as Language} theme={theme}>
           {({ tokens, getTokenProps }) => (
-            <div style={{ transform: `translateY(${-scrollLine * lineH}px)`, fontFamily: fonts.mono, fontSize, lineHeight: `${lineH}px` }}>
+            <div style={{ transform: `translateY(${-scrollLine * lineH}px)`, fontFamily: fonts.mono, fontSize, lineHeight: `${lineH}px`, fontVariantLigatures: "none" }}>
               {tokens.map((lineTokens, i) => {
                 const n = i + 1;
                 const lineVisibleChars = typed - lineStart[i];

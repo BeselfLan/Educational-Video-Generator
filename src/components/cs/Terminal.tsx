@@ -69,7 +69,7 @@ export const Terminal: React.FC<TerminalProps> = ({
   const lastCmd = [...shown].reverse().find((r) => r.kind === "cmd");
 
   const headerH = bare ? 0 : 46;
-  const capacity = rect ? Math.max(1, Math.floor((rect.h - headerH - 28) / lineH)) : Infinity;
+  const capacity = rect ? Math.max(1, Math.floor((rect.h - headerH - 32) / lineH)) : Infinity;
   // Smooth scroll: each row that appears beyond capacity pushes the content up by one row.
   const smoothCount = rows.reduce((s, r) => s + progress(frame, r.at, 6), 0);
   const scrollRows = Math.max(0, smoothCount - capacity);
@@ -99,30 +99,33 @@ export const Terminal: React.FC<TerminalProps> = ({
           <span style={{ fontFamily: fonts.mono, fontSize: 18, color: colors.textDim }}>{title}</span>
         </div>
       )}
-      <div style={{ flex: 1, overflow: "hidden", padding: "14px 20px" }}>
-        <div style={{ transform: `translateY(${-scrollRows * lineH}px)`, fontFamily: fonts.mono, fontSize, lineHeight: `${lineH}px` }}>
-          {shown.map((r, i) => {
-            if (r.kind === "cmd") {
-              const n = typedChars(frame, r.at, r.cps ?? 35, fps, r.text.length);
-              const isLast = r === lastCmd;
-              const typing = n < r.text.length;
-              // The cursor sits on the latest command while it types and until output arrives.
-              const outputAfter = shown.some((o) => o.at > r.at && o.kind !== "cmd");
-              const cursor = isLast && (typing || (!outputAfter && blink(frame)));
+      {/* Padding sits outside the clipping box so scrolled-out rows never peek into it. */}
+      <div style={{ flex: 1, padding: "14px 20px", minHeight: 0, display: "flex" }}>
+        <div style={{ flex: 1, overflow: "hidden" }}>
+          <div style={{ transform: `translateY(${-scrollRows * lineH}px)`, fontFamily: fonts.mono, fontSize, lineHeight: `${lineH}px`, fontVariantLigatures: "none" }}>
+            {shown.map((r, i) => {
+              if (r.kind === "cmd") {
+                const n = typedChars(frame, r.at, r.cps ?? 35, fps, r.text.length);
+                const isLast = r === lastCmd;
+                const typing = n < r.text.length;
+                // The cursor sits on the latest command while it types and until output arrives.
+                const outputAfter = shown.some((o) => o.at > r.at && o.kind !== "cmd");
+                const cursor = isLast && (typing || (!outputAfter && blink(frame)));
+                return (
+                  <div key={i} style={{ whiteSpace: "pre", height: lineH }}>
+                    <span style={{ color: accent, fontWeight: 700 }}>{r.prompt ?? prompt}</span>
+                    <span style={{ color: KIND_COLOR.cmd }}>{r.text.slice(0, n)}</span>
+                    {cursor ? <span style={{ display: "inline-block", width: fontSize * 0.6, height: fontSize * 1.1, verticalAlign: "middle", background: colors.text }} /> : null}
+                  </div>
+                );
+              }
               return (
-                <div key={i} style={{ whiteSpace: "pre", height: lineH }}>
-                  <span style={{ color: accent, fontWeight: 700 }}>{r.prompt ?? prompt}</span>
-                  <span style={{ color: KIND_COLOR.cmd }}>{r.text.slice(0, n)}</span>
-                  {cursor ? <span style={{ display: "inline-block", width: fontSize * 0.6, height: fontSize * 1.1, verticalAlign: "middle", background: colors.text }} /> : null}
+                <div key={i} style={{ whiteSpace: "pre", height: lineH, color: KIND_COLOR[r.kind], opacity: progress(frame, r.at, 5) }}>
+                  {r.text || " "}
                 </div>
               );
-            }
-            return (
-              <div key={i} style={{ whiteSpace: "pre", height: lineH, color: KIND_COLOR[r.kind], opacity: progress(frame, r.at, 5) }}>
-                {r.text || " "}
-              </div>
-            );
-          })}
+            })}
+          </div>
         </div>
       </div>
     </div>
