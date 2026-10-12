@@ -12,15 +12,17 @@ Remotion 4.0.535 + React 19 + TypeScript. Videos are 1920×1080 at 30 fps. Every
 ```
 src/
   index.ts                    registerRoot
-  Root.tsx                    every <Composition>, grouped in <Folder>s by subject
+  Root.tsx                    every public <Composition>, grouped in <Folder>s; also loads private ones
   components/
     core/                     subject-independent: theme, timing helpers, geometry, text/layout primitives
     cs/                       code, terminals, diagrams, message flows
     math/                     (empty: add math components here)
     stats/                    (empty: add statistics components here)
   compositions/
-    <video>/                  one folder per video: <Video>.tsx + scenes/*.tsx + data/snippets
+    video.ts                  VIDEO: the shared 1920×1080 / 30 fps format
+    <video>/                  one folder per public video: <Video>.tsx + scenes/*.tsx + data/snippets
     gallery/                  one preview composition per subject (CsGallery, ...)
+    private/<video>/          personal or client videos: gitignored, see "Private videos" below
 .claude/skills/remotion-animations/reference/
   core.md  cs.md  math.md  stats.md     props + examples for every component
 ```
@@ -63,7 +65,7 @@ Full props and examples are in the reference file for each subject. Read the rel
 1. **Plan** the scenes: what each one shows, its duration in frames, and caption cues. Read the source material first.
 2. **One file per scene** in `compositions/<video>/scenes/`. Each exports its component and a `<NAME>_DURATION`, and keeps a timeline (`const T = {...}`) at the top when many things are timed together. Long code and payload strings go in a `snippets.ts`.
 3. **Compose** the scenes in `<Video>.tsx` with `TransitionSeries` (fade, 15 frames), and export the total duration.
-4. **Register** it in `Root.tsx` under the subject's `<Folder>`.
+4. **Register** it: in `Root.tsx` under the subject's `<Folder>` for a public video, or with an `index.tsx` for a private one (next section).
 5. **Check** it (see the next section), then render it.
 
 Scene skeleton:
@@ -80,6 +82,12 @@ export const Foo: React.FC = () => (
 ```
 
 Safe area: the header title takes y 56–190; captions sit at the bottom (y ≈ 960–1040). Keep content between them, with an 60–80 px side margin.
+
+## Private videos
+
+Videos about the user's own projects, clients or anything personal are **private**: they go in `src/compositions/private/<video>/`, and their assets go in `public/private/`. Both are gitignored, as is `out/`, and they must never be committed. Don't name or describe them in committed files either: no examples, comments, docs or commit messages drawn from them. When unsure, make it private.
+
+A private video's folder has an `index.tsx` that default-exports a component rendering its `<Composition>`s, using `VIDEO` from `compositions/video.ts`. `Root.tsx` picks these up with `require.context` and lists them under **Private** in the Studio, so `Root.tsx` itself never imports one. Scenes inside `private/<video>/scenes/` import components from `../../../../components/...`. A template is in `src/compositions/private/README.md`.
 
 ## Checking your work
 
