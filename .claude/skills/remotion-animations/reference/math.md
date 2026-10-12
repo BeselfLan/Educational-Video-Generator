@@ -1,6 +1,6 @@
 # math components
 
-`src/components/math/`: **none yet.** Export new components from `src/components/math/index.ts`, and document each one here in the same format as [cs.md](cs.md): purpose, props table, a minimal example and gotchas. Add a `MathGallery` composition in `src/compositions/gallery/` the first time you add one.
+`src/components/math/`: **none yet.** Export new components from `src/components/math/index.ts`, and document each one here in the same format as [cs.md](cs.md): purpose, props table, a minimal example and gotchas. Add a `MathGallery` composition in `src/compositions/gallery/` the first time you add one, and add the subject to `SUBJECTS` in `gallery/subjects.ts` so the `DemoReel` plays its demos.
 
 ## Planned components, and how to build them
 

@@ -1,6 +1,6 @@
 # cs components
 
-`src/components/cs/`: code, terminals, system diagrams and message flows. To preview them all, open the `CsGallery` composition (`src/compositions/gallery/CsGallery.tsx`).
+`src/components/cs/`: code, terminals, system diagrams and message flows. To preview them all, open the `CsGallery` composition (`src/compositions/gallery/CsGallery.tsx`), or the `DemoReel`, which plays every subject's demos in turn.
 
 Which component to use:
 

@@ -1,6 +1,6 @@
 # stats components
 
-`src/components/stats/`: **none yet.** Export new components from `src/components/stats/index.ts`, and document each one here in the same format as [cs.md](cs.md): purpose, props table, a minimal example and gotchas. Add a `StatsGallery` composition in `src/compositions/gallery/` the first time you add one.
+`src/components/stats/`: **none yet.** Export new components from `src/components/stats/index.ts`, and document each one here in the same format as [cs.md](cs.md): purpose, props table, a minimal example and gotchas. Add a `StatsGallery` composition in `src/compositions/gallery/` the first time you add one, and add the subject to `SUBJECTS` in `gallery/subjects.ts` so the `DemoReel` plays its demos.
 
 ## Planned components, and how to build them
 

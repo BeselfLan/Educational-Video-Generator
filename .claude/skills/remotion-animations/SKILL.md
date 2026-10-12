@@ -21,7 +21,8 @@ src/
   compositions/
     video.ts                  VIDEO: the shared 1920×1080 / 30 fps format
     <video>/                  one folder per public video: <Video>.tsx + scenes/*.tsx + data/snippets
-    gallery/                  one preview composition per subject (CsGallery, ...)
+    gallery/                  one preview composition per subject (CsGallery, ...), subjects.ts
+                              (registry of every subject's demos) and DemoReel (plays them all)
     private/<video>/          personal or client videos: gitignored, see "Private videos" below
 .claude/skills/remotion-animations/reference/
   core.md  cs.md  math.md  stats.md     props + examples for every component
@@ -109,7 +110,7 @@ Pick still frames at the moments that matter: just after each element enters, mi
 1. Decide the subject (`core` if it is useful to every subject). Create `components/<subject>/<Name>.tsx`. Add a new subject folder (e.g. `physics/`) with its own `index.ts` and reference file if none fits.
 2. Follow the conventions above: `at`/`exitAt`, windows for highlights, a `rect` for absolute placement, theme colors as defaults with a color prop to override, everything frame-pure. Build on `core` helpers (`progress`, `springIn`, `anchor`...) instead of re-deriving them.
 3. Export it, with its props type, from the subject's `index.ts`.
-4. Add a segment to that subject's gallery composition (`compositions/gallery/`; create `<Subject>Gallery.tsx` and register it if none exists).
+4. Add a demo to that subject's gallery (`compositions/gallery/`), e.g. a `{name, Component}` entry in `CS_DEMOS`. For a new subject, create `<Subject>Gallery.tsx` exporting `<SUBJECT>_DEMOS`, register the composition in `Root.tsx`, and add the subject to `SUBJECTS` in `gallery/subjects.ts`; the `DemoReel` then gives it a section card automatically.
 5. Document it in `reference/<subject>.md`: purpose, props table, a minimal example, and gotchas. Add it to the index table above.
 6. Typecheck, render gallery stills, and look at them.
 
