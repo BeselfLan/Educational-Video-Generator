@@ -4,6 +4,12 @@ A library of animation components for making **explainer videos about coding, co
 
 The goal is to make it quick to produce clear, accurate animations that help other people learn. Examples include code that highlights line by line, a request travelling through an architecture diagram, and a terminal session typing itself out. You describe the scene once, and the library handles the timing, motion and styling.
 
+## Demo reel
+
+[![Demo reel: every component in action](docs/demo-reel.gif)](docs/demo-reel.mp4)
+
+A 36-second tour of the component library. Click the preview above for the full-quality MP4 ([docs/demo-reel.mp4](docs/demo-reel.mp4)). The reel is itself made with this library: see [`src/compositions/gallery/DemoReel.tsx`](src/compositions/gallery/DemoReel.tsx).
+
 ## What it uses
 
 | Tool | Role |
@@ -39,6 +45,13 @@ npx remotion render src/index.ts DemoReel out/demo-reel.mp4
 npx remotion still src/index.ts DemoReel out/frame.png --frame=200
 
 npm run typecheck
+```
+
+To refresh the demo reel in `docs/` after changing components:
+
+```bash
+npx remotion render src/index.ts DemoReel docs/demo-reel.mp4
+ffmpeg -i docs/demo-reel.mp4 -vf "fps=10,scale=800:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" -y docs/demo-reel.gif
 ```
 
 The available videos are:
