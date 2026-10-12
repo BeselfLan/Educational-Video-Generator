@@ -38,6 +38,7 @@ export const Annotation: React.FC<AnnotationProps> = ({
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  if (frame < at) return null;
   const draw = progress(frame, at, 16);
   const out = fadeOut(frame, exitAt);
   const pop = springIn(frame, fps, at + 10);
