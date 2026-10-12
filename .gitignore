@@ -1,2 +1,7 @@
 node_modules/
 out/
+
+# Personal and client videos stay local: see src/compositions/private/README.md
+src/compositions/private/*
+!src/compositions/private/README.md
+public/private/
