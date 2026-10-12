@@ -2,6 +2,7 @@
 // (`npm run dev`) or render stills to check a component after changing it.
 import React from "react";
 import { Series } from "remotion";
+import type { GalleryDemo } from "./subjects";
 import { anchor, Annotation, Badge, BulletList, Captions, colors, Scene, Title, type Rect } from "../../components/core";
 import {
   AppWindow,
@@ -137,14 +138,20 @@ const WindowDemo = () => (
   </Scene>
 );
 
-const DEMOS = [CodeDemo, TerminalDemo, DiagramDemo, SequenceDemo, WindowDemo];
-export const GALLERY_DURATION = DEMOS.length * GALLERY_SEGMENT;
+export const CS_DEMOS: GalleryDemo[] = [
+  { name: "Code", Component: CodeDemo },
+  { name: "Terminal", Component: TerminalDemo },
+  { name: "Diagrams", Component: DiagramDemo },
+  { name: "Sequence diagrams", Component: SequenceDemo },
+  { name: "Windows and layers", Component: WindowDemo },
+];
+export const GALLERY_DURATION = CS_DEMOS.length * GALLERY_SEGMENT;
 
 export const CsGallery: React.FC = () => (
   <Series>
-    {DEMOS.map((Demo, i) => (
+    {CS_DEMOS.map(({ Component }, i) => (
       <Series.Sequence key={i} durationInFrames={GALLERY_SEGMENT}>
-        <Demo />
+        <Component />
       </Series.Sequence>
     ))}
   </Series>
