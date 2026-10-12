@@ -9,6 +9,8 @@ const CLAMP = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 /** 0 -> 1 between `at` and `at + duration`, clamped, eased (default ease-out cubic). */
 export function progress(frame: number, at: number, duration: number, easing: (t: number) => number = Easing.out(Easing.cubic)): number {
+  // An open-ended window (at = Infinity) never starts; interpolate() rejects non-finite ranges.
+  if (!Number.isFinite(at)) return at < 0 ? 1 : 0;
   if (duration <= 0) return frame >= at ? 1 : 0;
   return interpolate(frame, [at, at + duration], [0, 1], { ...CLAMP, easing });
 }
